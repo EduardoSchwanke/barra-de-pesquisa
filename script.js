@@ -1,7 +1,7 @@
 'use strict';
 
 const h1 = document.querySelector('.alert');
-let existeItem;
+let existeItem = false;
 
 const DB = [
     {
@@ -98,13 +98,13 @@ showElements();
 
 const resetarItems = () => {
     items.forEach(item => {
-        item.style.display = "flex"
+        item.style.display = "flex";
     })
-    h1.style.display = 'none'
+    h1.style.display = 'none';
 }
 
 const semItem = () => {
-    h1.style.display = "block"
+    h1.style.display = 'block';
 }
 
 const procurarItem = (itemDesejado) => {
@@ -124,8 +124,7 @@ const procurarItem = (itemDesejado) => {
             semItem();
         }
         existeItem = false;
-    }
-    
+    } 
 }
 
 const pesquisarItem = (event) => {
