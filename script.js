@@ -3,6 +3,13 @@
 const h1 = document.querySelector('.alert');
 let existeItem = false;
 
+const autocomplete = document.querySelector('.auto-complete');
+const input = document.querySelector('#pesquisa');
+
+
+let letra = '';
+let itemExiste = false;
+
 const DB = [
     {
         'nome':'celular',
@@ -11,6 +18,10 @@ const DB = [
     {
         'nome':'computador',
         'valor':'2000,00'
+    },
+    {
+        'nome':'componente',
+        'valor':'1200,00'
     },
     {
         'nome':'tablet',
@@ -128,6 +139,7 @@ const procurarItem = (itemDesejado) => {
 }
 
 const pesquisarItem = (event) => {
+    reset();
     event.preventDefault()
     const itemDesejado = document.querySelector('#pesquisa').value
     procurarItem(itemDesejado);
@@ -135,5 +147,51 @@ const pesquisarItem = (event) => {
 
 const items = document.querySelectorAll('.item-single');
 
+
+
+const reset = () => {
+    autocomplete.style.display = 'none'
+}
+
+const limparAutoComplete = () => {
+    autocomplete.innerHTML = ''
+}
+
+const pegarLetra = (event)=> {
+    let key = event.key;
+    if(key.length < 2){
+        letra += event.key;
+    }
+    if(key == "Backspace"){
+        letra = letra.substring(0, letra.length - 1);
+    }
+    if(letra.length >= 1){
+        autocomplete.style.display = 'block';
+    }
+    if(letra.length == 0){
+        autocomplete.style.display = 'none';
+    }
+
+    limparAutoComplete();
+
+    DB.forEach(item => {
+        if(letra == item.nome.substr(0, letra.length)){
+            autocomplete.innerHTML += `
+                <div class="item-complete">
+                    <p>${item.nome}</p>
+                    <p>R$${item.valor}</p>
+                </div>
+            `;
+            itemExiste = true;
+        }
+    })
+    if(itemExiste == false){
+        autocomplete.innerHTML = "<p>item não encontrado :(</p>";
+    }
+    itemExiste = false;
+}
+
+
 document.querySelector('.show-items').addEventListener('click', resetarItems)
 document.querySelector('form').addEventListener('submit', pesquisarItem);
+input.addEventListener('keydown', pegarLetra);
