@@ -79,7 +79,7 @@ const DB = [
         'nome':'headset',
         'valor':'200,00'
     },
-];
+]; 
 
 
 const createElements = (nome, valor) => {
@@ -135,6 +135,8 @@ const procurarItem = (itemDesejado) => {
             semItem();
         }
         existeItem = false;
+        autocomplete.style.display = 'none';
+        input.style.borderRadius = "5px 0 0 5px";
     } 
 }
 
@@ -148,6 +150,7 @@ const pesquisarItem = (event) => {
 const items = document.querySelectorAll('.item-single');
 
 
+//  auto complemento
 
 const reset = () => {
     autocomplete.style.display = 'none'
@@ -167,9 +170,11 @@ const pegarLetra = (event)=> {
     }
     if(letra.length >= 1){
         autocomplete.style.display = 'block';
+        input.style.borderRadius = "5px 0 0 0";
     }
     if(letra.length == 0){
         autocomplete.style.display = 'none';
+        input.style.borderRadius = "5px 0 0 5px";
     }
 
     limparAutoComplete();
@@ -189,9 +194,20 @@ const pegarLetra = (event)=> {
         autocomplete.innerHTML = "<p>item não encontrado :(</p>";
     }
     itemExiste = false;
+
+
+
+    let items_complete = document.querySelectorAll('.item-complete');
+
+    items_complete.forEach(item => {
+        item.addEventListener('click', (event) => {
+            const click = event.target.children[0].innerHTML;
+            procurarItem(click);
+        })
+    })
 }
 
 
+input.addEventListener('keydown', pegarLetra);
 document.querySelector('.show-items').addEventListener('click', resetarItems)
 document.querySelector('form').addEventListener('submit', pesquisarItem);
-input.addEventListener('keydown', pegarLetra);
